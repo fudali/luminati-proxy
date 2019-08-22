@@ -7,7 +7,7 @@ if [ $(id -u) = 0 ]; then
     IS_ROOT=1
 fi
 LUM=0
-VERSION="1.149.104"
+VERSION="1.149.339"
 if [ -f  "/usr/local/hola/zon_config.sh" ]; then
     LUM=1
 fi
@@ -407,7 +407,8 @@ check_npm()
     else
         local npm_ver=$(npm -v)
         zerr "check_npm: $npm_ver"
-        if [[ "$npm_ver" =~ ^([3,5,7-9]\.|[1-9][0-9]+\.) ]]; then
+        if [[ "$npm_ver" =~ ^([3,5,7-9]\.|[1-9][0-9]+\.) || \
+            OS_MAC -eq 1 && "$npm_ver" =~ ^(6\.([5-9]|[1-9][0-9]+)) ]]; then
             UPDATE_NPM=1
             perr "check_npm_bad_version" "$npm_ver"
         fi
@@ -522,6 +523,7 @@ reinstall_node_mac()
 {
     NODE_VER='8.11.2'
     install_nave_node
+    update_npm
 }
 
 check_env()
